@@ -26,7 +26,7 @@
                {:prev-node-path '(:childrens :a :childrens :b), :childrens {:a {:childrens {:b {:childrens {}, :is-word-completed true, :data '("ab")}}, :is-word-completed true, :data '("a")}}}))))))
 
 
-(deftest search-tree
+(deftest search-tree-test
   (testing "Cannot find 'abc' in a tree having ('def') "
     (let [tree (add-word {} "def")]
       (is (= (search-tree tree "abc")
