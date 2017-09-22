@@ -107,5 +107,16 @@
 
    (testing "Can ignore whitespaces around search text"
      (is (= [chris-harris chris]
-            (dir/search-contact directory "   \nchris   \n"))))))
+            (dir/search-contact directory "   \nchris   \n")))))
+
+  (testing "Should order exact matches higher than other matches"    
+    (let [christian-george {:first-name "christian" :last-name "george"}
+          chris-harris {:first-name "chris" :last-name "harris"}
+          chris {:first-name "Chris"}
+          directory (-> (dir/new)
+                        (dir/add-contact christian-george)
+                        (dir/add-contact chris-harris)
+                        (dir/add-contact chris))]
+      (is (= [chris-harris chris christian-george]
+             (dir/search-contact directory "chris"))))))
 
