@@ -3,8 +3,6 @@
 (def new-node {:childrens {}
                :is-word-completed false})
 
-(def new (constantly {}))
-
 (defn- add-word-reducer [{:keys [prev-node-path] :as tree} ch]
   (let [prev-node (get-in tree prev-node-path)
         kee (-> ch str keyword)
