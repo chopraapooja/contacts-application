@@ -38,6 +38,13 @@
             contact valid-contact-with-first-name
             updated-directory (dir/add-contact directory contact)]
         (is (= [contact]
+               (:contacts updated-directory)))))
+
+    (testing "Should trim spaces from names"
+      (let [directory (dir/new)
+            contact {:first-name "   JIM   \n" :last-name "\n  Carry    "}
+            updated-directory (dir/add-contact directory contact)]
+        (is (= [{:first-name "JIM" :last-name "Carry"}]
                (:contacts updated-directory))))))
 
 
@@ -71,6 +78,34 @@
         directory (-> (dir/new)
                       (dir/add-contact chris-harris)
                       (dir/add-contact chris))]
-   (testing "Can search a contact"
+
+   (testing "Can search contacts with few-letters from first-name"
      (is (= [chris-harris chris]
-            (dir/search-contact directory "Ch"))))))
+            (dir/search-contact directory "Ch"))))
+
+   (testing "Can search contacts with few-name from last-name"
+     (is (= [chris-harris]
+            (dir/search-contact directory "Ha"))))
+
+   (testing "Can search contacts with first-name"
+     (is (= [chris-harris chris]
+            (dir/search-contact directory "Chris"))))
+
+   (testing "Can search contacts with last-name"
+     (is (= [chris-harris]
+            (dir/search-contact directory "Harris"))))
+
+   (testing "Can search irrespective of upper/lower case"
+     (is (= [chris-harris chris]
+            (dir/search-contact directory "chris")))
+     
+     (is (= [chris-harris chris]
+            (dir/search-contact directory "CHRIS")))
+     
+     (is (= [chris-harris chris]
+            (dir/search-contact directory "cHrIs"))))
+
+   (testing "Can ignore whitespaces around search text"
+     (is (= [chris-harris chris]
+            (dir/search-contact directory "   \nchris   \n"))))))
+
