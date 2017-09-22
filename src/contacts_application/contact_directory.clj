@@ -14,7 +14,7 @@
     (trie/add-word trie (str/lower-case name) data)
     trie))
 
-(defn sanatize-contact [contact]
+(defn- sanatize-contact [contact]
   (cond-> contact
           (not-empty (:last-name contact))(update :last-name str/trim) 
           :default                        (update :first-name str/trim)))
@@ -31,6 +31,6 @@
     directory))
 
 (defn search-contact [directory search-text]
-  (let [contact-indices (trie/search-tree (:trie directory) 
-                                          (-> search-text str/trim str/lower-case))]
+  (let [contact-indices (distinct (trie/search-tree (:trie directory) 
+                                            (-> search-text str/trim str/lower-case)))]
     (utils/pick (:contacts directory) contact-indices)))

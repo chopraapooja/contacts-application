@@ -118,5 +118,12 @@
                         (dir/add-contact chris-harris)
                         (dir/add-contact chris))]
       (is (= [chris-harris chris christian-george]
+             (dir/search-contact directory "chris")))))
+
+  (testing "Can search when search-string appears in both first & last name"
+    (let [christian-chris {:first-name "christian" :last-name "chris"}
+          directory (-> (dir/new)
+                        (dir/add-contact christian-chris))]
+      (is (= [christian-chris]
              (dir/search-contact directory "chris"))))))
 
