@@ -11,5 +11,3 @@
                               (-> trie
                                   (trie/add-word first-name contact-index)
                                   (trie/add-word last-name contact-index))))))
-
-(def get-all-contacts #'trie/get-all-data-nodes)
