@@ -3,6 +3,8 @@
 (def new-node {:childrens {}
                :is-word-completed false})
 
+(def new (constantly {}))
+
 (defn- add-word-reducer [{:keys [prev-node-path] :as tree} ch]
   (let [prev-node (get-in tree prev-node-path)
         kee (-> ch str keyword)
@@ -27,9 +29,9 @@
            (update-in (concat prev-node-path [:data]) #(concat (or % [])
                                                                [data])))))))
 
-(defn find-complete-words 
+(defn get-all-data-nodes
   ([tree]
-   (find-complete-words tree []))
+   (get-all-data-nodes tree []))
   ([tree result]
    (if (and tree (empty? tree))
      result
@@ -37,7 +39,7 @@
                     (concat result (:data tree))
                     result)]
        (reduce (fn [acc [k v]]
-                 (concat acc (find-complete-words v []))) 
+                 (concat acc (get-all-data-nodes v []))) 
                result 
                (:childrens tree))))))
 ;; FIXME:
@@ -60,4 +62,4 @@
 
 (defn search-tree [tree search-text]
   (let [tree-node (traverse tree search-text)]
-    (find-complete-words tree-node)))
+    (get-all-data-nodes tree-node)))
