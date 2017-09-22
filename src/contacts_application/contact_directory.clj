@@ -1,5 +1,6 @@
 (ns contacts-application.contact-directory
-  (:require [contacts-application.trie :as trie]))
+  (:require [contacts-application.trie :as trie]
+            [contacts-application.utility :as utils]))
 
 (def new (constantly {:contacts []
                       :trie trie/new-node}))
@@ -16,3 +17,7 @@
                                     (trie/add-word first-name contact-index)
                                     (trie/add-word last-name contact-index)))))
     directory))
+
+(defn search-contact [directory search-text]
+  (let [contact-indices (trie/search-tree (:trie directory) search-text)]
+    (utils/pick (:contacts directory) contact-indices)))

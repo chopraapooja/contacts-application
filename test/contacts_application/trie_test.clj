@@ -4,10 +4,10 @@
 
 (deftest add-word-test
   (testing "with empty trie-tree"
-      (testing "Adds a single-letter-word"
-        (is (= (add-word {} "a")
-               {:prev-node-path '(:childrens :a), 
-                :childrens {:a {:childrens {}, :is-word-completed true, :data '("a")}}})))
+    (testing "Adds a single-letter-word"
+      (is (= (add-word {} "a")
+             {:prev-node-path '(:childrens :a), 
+              :childrens {:a {:childrens {}, :is-word-completed true, :data '("a")}}})))
 
     (testing "Adds a multi-letter-word"
       (is (= (add-word {} "ab")
@@ -18,6 +18,22 @@
         (is (= (add-word {} "a" {:a "I am a"})
                {:prev-node-path '(:childrens :a), 
                 :childrens {:a {:childrens {}, :is-word-completed true, :data '({:a "I am a"})}}}))))
+
+  (testing "Adding empty string should give the same tree back"
+    (is (= {}
+           (add-word {} "")))
+
+    (let [tree (add-word {} "abc")]
+      (is (= tree
+             (add-word tree "")))))
+
+  (testing "Adding nil as word should give the same tree back"
+    (is (= {}
+           (add-word {} nil)))
+
+    (let [tree (add-word {} nil)]
+      (is (= tree
+             (add-word tree "")))))
 
   (testing "with existing trie-tree"
     (testing "extending a tree "

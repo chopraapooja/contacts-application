@@ -17,15 +17,17 @@
   ([tree word]
    (add-word tree word word))
   ([tree word data]
-   (let [{:keys [prev-node-path] :as tree} 
-         (reduce add-word-reducer 
-                 (assoc tree  :prev-node-path [])
-                 word)]
-     (when (not-empty prev-node-path)
-       (-> tree
-           (assoc-in (concat prev-node-path [:is-word-completed]) true)
-           (update-in (concat prev-node-path [:data]) #(concat (or % [])
-                                                               [data])))))))
+   (if (clojure.string/blank? word)
+     tree
+     (let [{:keys [prev-node-path] :as tree} 
+           (reduce add-word-reducer 
+                   (assoc tree  :prev-node-path [])
+                   word)]
+       (when (not-empty prev-node-path)
+         (-> tree
+             (assoc-in (concat prev-node-path [:is-word-completed]) true)
+             (update-in (concat prev-node-path [:data]) #(concat (or % [])
+                                                                 [data]))))))))
 
 (defn get-all-data-nodes
   ([tree]
