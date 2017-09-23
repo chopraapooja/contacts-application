@@ -1,28 +1,21 @@
 (ns contacts-application.core
   (require [contacts-application.contact-directory :as contact-directory]
+           [contacts-application.contact :as contact]
            [clojure.string :as str])
   (:gen-class))
 
 (def directory (atom (contact-directory/new)))
 
-(defn to-contact [name]
-  (let [[first-name last-name] (str/split name #"\s")]
-    {:first-name first-name
-     :last-name last-name}))
-
-(defn to-full-name [{:keys [first-name last-name]}]
-  (str first-name last-name))
-
 (defn add-contact []
   (println "Enter name:")
   (swap! directory 
          contact-directory/add-contact 
-         (to-contact (read-line))))
+         (contact/to-contact (read-line))))
 
 (defn search-contact []
   (println "Enter name:")
-  (->> (contact-directory/search-contact @directory (read-line))
-       (map to-full-name)
+  (->> (contact-directory/search-contact @directory (str/trim (read-line)))
+       (map contact/to-full-name)
        (str/join "\n")
        println))
 
