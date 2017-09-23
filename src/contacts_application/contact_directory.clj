@@ -1,23 +1,16 @@
 (ns contacts-application.contact-directory
-  (:require [contacts-application.trie :as trie]
-            [contacts-application.utility :as utils]
+  (:require [contacts-application.contact :as contact]
+            [contacts-application.trie :as trie]
+            [contacts-application.utility :as u]
             [clojure.string :as str]))
 
 (def new (constantly {:contacts []
                       :trie trie/new-node}))
 
-(defn- valid-contact? [{:keys [first-name last-name]}]
-  (not (str/blank? first-name)))
-
 (defn- index-name-in-trie [trie name data]
-  (if (not-empty name) 
+  (if (u/not-empty-string? name)
     (trie/add-word trie (str/lower-case name) data)
     trie))
-
-(defn- sanatize-contact [contact]
-  (cond-> contact
-          (not-empty (:last-name contact))(update :last-name str/trim) 
-          :default                        (update :first-name str/trim)))
 
 (defn- add-contact-to-directory [directory contact]
   (update directory :contacts #(concat % [contact])))
@@ -30,8 +23,8 @@
                                   (index-name-in-trie last-name contact-index))))))
 
 (defn add-contact [directory contact]
-  (if (valid-contact? contact)
-    (let [_contact (sanatize-contact contact)]
+  (if (contact/valid? contact)
+    (let [_contact (contact/sanatize contact)]
       (-> directory 
           (add-contact-to-directory _contact)
           (index-contact _contact)))
@@ -41,4 +34,4 @@
   (let [_search-text (-> search-text str/trim str/lower-case)
         contact-indices (distinct (trie/search-tree (:trie directory) 
                                                     _search-text))]
-    (utils/pick (:contacts directory) contact-indices)))
+    (u/pick (:contacts directory) contact-indices)))
