@@ -1,32 +1,19 @@
 # contacts-application
 
-FIXME: description
+FIXME:
+- Should handle duplicate contacts
 
-## Installation
+## Run
 
-Download from http://example.com/FIXME.
-
-## Usage
-
-FIXME: explanation
-
-    $ java -jar contacts-application-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+    lein run
+    
+## Run Tests
+    
+    lein test
+    
+## Building jar
+    $ lein uberjar
+    $ java -jar target/uberjar/contacts-application-0.1.0-standalone.jar
 
 ## License
 
