@@ -7,7 +7,9 @@
 
 (def valid-contact-with-first-name {:first-name "Donald"})
 
-(def invalid-contact-without-first-name {})
+(def invalid-contact-with-first-name-as-nil {})
+
+(def invalid-contact-with-empty-first-name {:first-name ""})
 
 (deftest add-contact-test
   (testing "with VALID contacts"
@@ -58,12 +60,13 @@
 
     (testing "Should not update directory for contacts without first-name"
       (let [directory (dir/new)
-            contact invalid-contact-without-first-name
-            updated-directory (dir/add-contact directory contact)]
-        (is (= directory updated-directory))))
+            contact1 invalid-contact-with-first-name-as-nil
+            contact2 invalid-contact-with-empty-first-name]
+        (is (= directory (dir/add-contact directory contact1)))
+        (is (= directory (dir/add-contact directory contact2)))))
 
     (comment
-      ;; FIXME:
+      ;; FIXME: Not sure how to handle duplicate contacts from requirement point of view
       (testing "Should not update directory for duplicate contacts"
         (let [directory (dir/new)
               contact valid-contact

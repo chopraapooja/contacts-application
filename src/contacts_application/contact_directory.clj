@@ -7,7 +7,7 @@
                       :trie trie/new-node}))
 
 (defn- valid-contact? [{:keys [first-name last-name]}]
-  (not (nil? first-name)))
+  (not (str/blank? first-name)))
 
 (defn- index-name-in-trie [trie name data]
   (if (not-empty name) 
