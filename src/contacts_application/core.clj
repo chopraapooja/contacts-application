@@ -29,7 +29,7 @@
   [& args]
   (while true
     (println "1) Add Contact 2) Search 3) Exit")
-    (let [command (or (get commands (read-line))
+    (let [command (or (get commands (str/trim (read-line)))
                       #(println "Invalid Command"))]
       (command))))
 
