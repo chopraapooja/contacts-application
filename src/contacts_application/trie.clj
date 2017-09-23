@@ -42,12 +42,6 @@
                  (concat acc (get-all-data-nodes v []))) 
                result 
                (:childrens tree))))))
-;; FIXME:
-;; Due to lack of time not able to write tests in the format of clojure.test
-;; (find-complete-words {} [])
-;; (find-complete-words (add-word {} "a") [])
-;; (find-complete-words (-> {} (add-word "a") (add-word "ant") (add-word "antique")) [])
-;; (find-complete-words (-> {} (add-word "chris") (add-word "chrisharris")) [])
 
 (defn traverse [tree path]
     (loop [tree tree
